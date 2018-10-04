@@ -511,5 +511,43 @@ Kind Regards,
 -Q.
 
 
+*__  __            _   _
+|  \/  | __ _ _ __| |_(_)_ __
+| |\/| |/ _` | '__| __| | '_ \
+| |  | | (_| | |  | |_| | | | |
+|_|  |_|\__,_|_|   \__|_|_| |_|
+
+;
+
+
+ Martin, Vincent (STATCAN) via listserv.uga.edu
+12:22 PM (27 minutes ago)
+ to SAS-L
+
+I'm not sure that I've followed this discussion appropriately but I've
+long hoped for hash iterator methods that would separate .next() and
+.prev() into .next_key() and .next_key_item() for multidata: "y" hashes.
+While hash of hashes or the use of a key hash and a full multidata
+hash can do the same task, they're a bit more
+complicated for knowledge transfer of the programs.
+
+It's odd because this thread made me realize that my assumption
+about find_next() method that calling it on a null pointer
+(i.e. after the first loop completed) would reset from the start the
+same way that using .next() on a hash iterator restarts from the
+first item but it is not the case. It behaves like do_over but
+is not affected by reset_dup() method. You have to explicitly ca
+ll the find() method again on the same key to reset
+the pointer for the find_next() method.
+
+Vincent Martin
+
+Senior Methodologist – Social Survey Methods Division
+Statistics Canada / Government of Canada
+vincent.martin@canada.ca / Tel: 613-853-7135
+
+
+
+
 
 
