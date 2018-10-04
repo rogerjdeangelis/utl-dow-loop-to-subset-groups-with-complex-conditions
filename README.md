@@ -8,6 +8,7 @@ DOW loop to subset groups with complex conditions.
       2. Bartosz Jablonski gmail
       3. Quentin McMullin Large Pharma
       4. Vincent Martin
+      5. Paul Dorfman
 
     see github
     https://tinyurl.com/ybd392ab
@@ -555,6 +556,55 @@ DOW loop to subset groups with complex conditions.
     Statistics Canada / Government of Canada
     vincent.martin@canada.ca / Tel: 613-853-7135
 
+
+    *____             _
+    |  _ \ __ _ _   _| |
+    | |_) / _` | | | | |
+    |  __/ (_| | |_| | |
+    |_|   \__,_|\__,_|_|
+
+    ;
+
+
+    Paul Dorfman via listserv.uga.edu
+    6:11 PM (1 hour ago)
+     to SAS-L
+
+    Quentin,
+
+    Looping through the same same-key item group does not necessarily need RESET_DUP.
+
+    First, you can do it by staying away from DO_OVER (and before 9.4, there was
+    no other option) and using the construct:
+
+    if h.find() = 0 then do i = 1 to 3 until (h.find_next() ne 0) ;
+      ...
+    end ;
+
+    Second, the same-key item list is always reset when CHECK, FIND, or REF is
+    called. So, if DO_OVER is used, the pointer can be rewound, for instance,
+    by calling CHECK instead of RESET_DUP:
+
+    rc = h.check() ;
+    do i = 1 to 3 while (do_over() = 0) ;
+       ...
+    end ;
+
+    Or, perhaps even better:
+
+    if h.check() = 0 then do i = 1 to 3 while (do_over() = 0) ;
+       ...
+    end ;
+
+    since if the key is not in the table, it short-circuits the logic
+    without any superfluous actions on part of DO and DO_OVER.
+
+    If no action other than rewinding the pointer is required, CHECK
+    is preferable, of course, since it affects neither the table nor
+    the PDV. However, other scenarios can be ideated, under
+    which calling FIND or REF would be beneficial, though they would probably be fairly exotic.
+
+    Best regards
 
 
 
